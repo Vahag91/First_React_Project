@@ -1,5 +1,7 @@
+import Update from "./Update"
+
 const Header = () =>{
-    return <h1> Todo List </h1>;
+    return <div> <Update /> <h1> Todo List </h1> </div>
   }
 
   export default Header

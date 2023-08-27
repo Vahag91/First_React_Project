@@ -1,8 +1,9 @@
+import Li from "./Li";
 const TodoList = () =>{
     return (
       <ul>
-        <li>Learn JS </li>
-        <li> Learn React </li>
+       <Li/>
+       <Li/>
       </ul>
     );
   }
