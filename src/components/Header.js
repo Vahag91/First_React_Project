@@ -1,7 +1,7 @@
-import Update from "./Update"
+import ShowDate from "./ShowDate"
 
 const Header = () =>{
-    return <div> <Update /> <h1> Todo List </h1> </div>
+    return <div> <ShowDate /> <h1> Todo List </h1> </div>
   }
 
   export default Header
