@@ -1,3 +1,5 @@
+import "./todo-list-item.css"
+
 const TodoListItem = ({text, important})=>{
 
     const style = {
