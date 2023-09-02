@@ -8,7 +8,9 @@ const TodoListItem = ({text, important})=>{
     }
 
     return <li className="list-item" style={style}> {text}
-    
+    <span className="item-test">
+        {text}
+    </span>
     <span className="item-btns">
         <button className="item-btn-done"><FaCheck/></button>
         <button className="item-btn-important"><FaInfo /></button>

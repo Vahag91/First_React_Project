@@ -1,6 +1,10 @@
+import { Component } from 'react';
 import './add-item.css'
 
-const AddItem = () => {
+
+class AddItem extends Component {
+
+  render() {
     return (
       <div className='additem'>
         <input type="text" placeholder="Item text..." />
@@ -8,5 +12,11 @@ const AddItem = () => {
       </div>
     )
   }
-  
-  export default AddItem;
+}
+
+
+// const AddItem = () => {
+//     
+//   }
+
+export default AddItem;
