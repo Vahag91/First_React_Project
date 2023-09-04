@@ -1,22 +1,46 @@
+import { Component } from "react"
 import "./todo-list-item.css"
-import {FaTrash, FaInfo, FaCheck} from 'react-icons/fa6'
+import { FaTrash, FaInfo, FaCheck } from 'react-icons/fa6'
 
-const TodoListItem = ({text, important})=>{
+class TodoListItem extends Component {
 
-    const style = {
-        color: important ? "red" : "black"
+    state = {
+        isDone: false,
+        isImportant: this.props.important
     }
 
-    return <li className="list-item" style={style}> {text}
-    <span className="item-test">
-        {text}
-    </span>
-    <span className="item-btns">
-        <button className="item-btn-done"><FaCheck/></button>
-        <button className="item-btn-important"><FaInfo /></button>
-        <button className="item-btn-remove"><FaTrash/> </button>
-    </span>
-    </li>
-}
+    onDone = () => {
+        this.setState ({
+            isDone: !this.state.isDone
+        })
+    }
+        onImportant = () => {
+            this.setState({
+              isImportant: !this.state.isImportant
+            });
+          }
+          
+    
+    render() {
+    const {isDone,isImportant} = this.state
+        const { text } = this.props
+        const textStyle = {
+            textDecoration: isDone ? "red" : "black",
+            color: isDone ? "#aaa" : isImportant ? "red":"black",
+            fontWeight: isDone ? "normal": isImportant ?"bold":"normal"
+        }
 
+        return (<li className="list-item" > 
+            <span className="item-test" style={textStyle} onClick={this.onDone}>
+                {text}
+            </span>
+            <span className="item-btns">
+                <button className="item-btn-done" onClick={this.onDone}><FaCheck /></button>
+                <button className="item-btn-important" onClick={this.onImportant}><FaInfo /></button>
+                <button className="item-btn-remove"><FaTrash /> </button>
+            </span>
+        </li>
+        )
+    }
+}
 export default TodoListItem
