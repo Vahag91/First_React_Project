@@ -25,7 +25,7 @@ onAddItem = (text) =>{
 const newItem = {
   text,
   important: false ,
-  id: this.state.items.length > 0 ? this.state.items[this.state.items.length - 1].id + 1 : 1
+  id: this.state.items.length ? this.state.items[this.state.items.length - 1].id + 1 : 1
 };
 this.setState((prevState)=>{
   return {
@@ -35,12 +35,18 @@ this.setState((prevState)=>{
 }
 
 onDeleteItem = (id)=>{
-this.setState((prevState)=>{
+this.setState(({items})=>{
+
+const idx = items.findIndex((el)=> el.id === id)
+
   return {
-    items: prevState.items.filter(items => items.id !== id),
+    items: 
+    [...items.slice(0,idx),
+    ...items.slice(idx+1)]
   }
 })
 }
+
 
   render () {
 
