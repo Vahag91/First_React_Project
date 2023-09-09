@@ -18,9 +18,30 @@ class App extends Component {
     { text: "Learn React", important: false, id: 3 },
     { text: "Learn TypeScript", important: false, id: 4 },
     { text: "Learn NodeJs", important: true, id: 5 }
-  ]
+  ],
+  isDone: false,
+  result: []
 }
 
+
+handleSearch = (text) =>{
+
+  const searchingKeys = text.target.value.toLowerCase()
+
+  const filtered = this.state.items.filter((e)=>{
+    return e.text.toLowerCase().includes(searchingKeys)
+  })
+this.setState({
+  result: filtered
+})
+ 
+}
+
+onDone = () => {
+  this.setState ({
+      isDone: !this.state.isDone
+  })
+}
 onAddItem = (text) =>{
 const newItem = {
   text,
@@ -54,7 +75,7 @@ const idx = items.findIndex((el)=> el.id === id)
     <div className="app">
       <Header done={8} important={23}/>
       <Search />
-      <TodoList items={this.state.items} onDeleteItem={this.onDeleteItem} />
+      <TodoList items={this.state.items} isDone={this.state.isDone} onDeleteItem={this.onDeleteItem} onDone={this.onDone} />
       <AddItem onAddItem={this.onAddItem}/>
     </div>
     )

@@ -9,7 +9,13 @@ class TodoList extends Component {
     const { items } = this.props
 
     const data = items.map(({ text, important, id }) => {
-      return <TodoListItem text={text} important={important} uniqueId={id} key={id} onDeleteItem={this.props.onDeleteItem} />
+      return <TodoListItem 
+      text={text} 
+      important={important} 
+      uniqueId={id} key={id}
+       onDeleteItem={this.props.onDeleteItem}
+       onDone={this.props.onDone}
+       isDone={this.props.isDone} />
     })
     return (
       <ul className="todoList">
