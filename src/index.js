@@ -20,28 +20,37 @@ class App extends Component {
       { text: "Learn NodeJs", important: true, id: 5 }
     ],
     isDone: false,
+    storedItems: []
   }
 
-
+  componentDidMount = () => {
+    this.setState(() => {
+      const copy = [...this.state.items];
+      return { storedItems: copy };
+    })
+  }
+  
 
   handleSearch = (text) => {
+  
+  console.log(this.state.storedItems);
 
     const searchingKeys = text.target.value.toLowerCase()
 
-    if(searchingKeys===""){
+    if (searchingKeys === "") {
       this.setState({
-        items: this.state.items
+        items: [...this.state.storedItems]
       })
     } else {
 
-    const filtered = this.state.items.filter((e) => {
-      return e.text.toLowerCase().includes(searchingKeys)
-    })
-    this.setState({
-      items: filtered
-    })
+      const filtered = this.state.items.filter((e) => {
+        return e.text.toLowerCase().includes(searchingKeys)
+      })
+      this.setState({
+        items: filtered
+      })
 
-  }
+    }
 
   }
 
@@ -80,7 +89,8 @@ class App extends Component {
   render() {
 
     return (
-      <div className="app">
+      <div className="app" copy={this.makingCopy}>
+       
         <Header done={8} important={23} />
         <Search handleSearch={this.handleSearch} />
         <TodoList items={this.state.items} isDone={this.state.isDone} onDeleteItem={this.onDeleteItem} onDone={this.onDone} />
