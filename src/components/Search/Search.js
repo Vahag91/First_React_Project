@@ -10,9 +10,9 @@ class Search extends Component {
         <input type="text"
          placeholder="Type text for search..."
          onChange={this.props.handleSearch} />
-        <button className="search-btn-all">All</button>
+        <button className="search-btn-all" onClick={this.props.showingAll}>All</button>
         <button className="search-btn-done">Done</button>
-        <button className="search-btn-important">Important</button>
+        <button className="search-btn-important" onClick={this.props.showingImportant}>Important</button>
         </div>
       )
   }

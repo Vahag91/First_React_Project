@@ -29,11 +29,31 @@ class App extends Component {
       return { storedItems: copy };
     })
   }
-  
+
+  showingAll =()=>{
+    const copy = [...this.state.storedItems]
+    this.setState(()=>{
+      return{
+        items: copy
+      }
+    })
+  }
+
+  showingImportant = ()=>{
+    const importantItems = [...this.state.items.filter((e)=>{
+      return e.important === true
+    })] 
+    console.log(importantItems);
+    this.setState(()=>{
+      return{
+        items: importantItems
+      }
+    })
+  }
 
   handleSearch = (text) => {
-  
-  console.log(this.state.storedItems);
+
+    console.log(this.state.storedItems);
 
     const searchingKeys = text.target.value.toLowerCase()
 
@@ -49,16 +69,16 @@ class App extends Component {
       this.setState({
         items: filtered
       })
-
     }
-
   }
+
 
   onDone = () => {
     this.setState({
       isDone: !this.state.isDone
     })
   }
+
   onAddItem = (text) => {
     const newItem = {
       text,
@@ -90,9 +110,9 @@ class App extends Component {
 
     return (
       <div className="app" copy={this.makingCopy}>
-       
+
         <Header done={8} important={23} />
-        <Search handleSearch={this.handleSearch} />
+        <Search handleSearch={this.handleSearch} showingImportant={this.showingImportant} showingAll={this.showingAll}/>
         <TodoList items={this.state.items} isDone={this.state.isDone} onDeleteItem={this.onDeleteItem} onDone={this.onDone} />
         <AddItem onAddItem={this.onAddItem} />
       </div>
