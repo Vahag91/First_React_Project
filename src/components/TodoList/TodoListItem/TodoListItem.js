@@ -28,15 +28,16 @@ class TodoListItem extends Component {
     }
 
     onEditButton = () => {
-        this.setState(({ isEdit, text }) => {
-            if (isEdit &&!validateInput(text)) {
+        this.setState(({ isEdit, newText }) => {
+            if (isEdit && !validateInput(newText)) {
                 console.log("error");
                 return {
                     isError: true
                 }
             }
             return {
-                isEdit: !isEdit
+                isEdit: !isEdit,
+                isError: false
             }
         })
     }
@@ -51,7 +52,7 @@ class TodoListItem extends Component {
 
 
     render() {
-        const { isImportant, isEdit } = this.state
+        const { isImportant, isEdit, isError } = this.state
 
         const textStyle = {
             textDecoration: this.props.isDone ? "red" : "black",
@@ -59,12 +60,21 @@ class TodoListItem extends Component {
             fontWeight: this.props.isDone ? "normal" : isImportant ? "bold" : "normal"
         }
 
+        const inputStyle = {
+            borderColor: isError ? "red" : "#ccc"
+        }
         return (<li className="list-item" >
 
             {isEdit ? (
+                <div className="item-input-wrapper">
+                    <input type="text"
+                        value={this.state.newText}
+                        style={inputStyle}
+                        onChange={this.onInput} />
 
-                <input type="text" value={this.state.newText} onChange={this.onInput} />
-
+                    {isError ? <span className="input-error-message">Input text is requires</span> : null
+                    }
+                </div>
             ) : (
 
                 <span className="item-test" style={textStyle} onClick={this.props.onDone}>

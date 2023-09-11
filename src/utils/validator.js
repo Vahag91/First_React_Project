@@ -9,5 +9,5 @@ const validateInput = (text)=>{
 
 
 export {
-    validateInput
+    validateInput,
 }

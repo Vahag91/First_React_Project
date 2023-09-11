@@ -1,5 +1,6 @@
 import { Component } from 'react';
-
+import ErrorMessage from '../ErrorMessage';
+import { validateInput } from '../../utils/validator';
 import './add-item.css'
 
 
@@ -7,7 +8,8 @@ class AddItem extends Component {
 
 
   state = {
-    inputValue: ""
+    inputValue: "",
+    isError: false
   }
 
 onInputChange = (event)=>{
@@ -17,13 +19,22 @@ onInputChange = (event)=>{
 }
 
 onBtnClick = () =>{
+  if(!validateInput(this.state.inputValue)){
+    this.setState({isError:true})
+    return
+  }
+this.setState({isError:false})
 this.props.onAddItem(this.state.inputValue);
 this.setState({inputValue: ""})
 }
   render() {
+    const {isError} = this.state
     return (
       <div className='additem'>
-        <div>{this.state.inputValue}</div>
+
+{
+  isError ? <ErrorMessage message="error message text" type="error"/>:null
+}
      <input type="text" value={this.state.inputValue} placeholder="Item text..." onChange={this.onInputChange}/>
         <button onClick={this.onBtnClick}>Add item</button>
       </div>
