@@ -1,97 +1,98 @@
-import { Component } from "react"
-import "./todo-list-item.css"
-import { FaPenToSquare } from "react-icons/fa6"
-import { FaTrash, FaInfo, FaCheck } from 'react-icons/fa6'
-import { validateInput } from "../../../utils/validator"
+import { Component } from 'react';
+import { FaTrash, FaInfo, FaCheck, FaPenToSquare, FaCircleCheck } from 'react-icons/fa6';
+import { validateInput } from '../../../utils/validator'
+
+import './todo-list-item.css';
 
 class TodoListItem extends Component {
+  state = {
+    isEdit: false,
+    text: this.props.text,
+    isError: false,
+  }
 
-    state = {
+  onDone = () => {
+    this.props.onDone(this.props.id)
+  }
 
-        isImportant: this.props.important,
-        isEdit: false,
-        newText: this.props.text,
+  onImportant = () => {
+    this.props.onImportant(this.props.id)
+  }
+
+  onDelete = () => {
+    this.props.deletItem(this.props.id)
+  }
+
+  onEdit = () => {
+    this.setState(({ isEdit, text }) => {
+      if (isEdit && !validateInput(text)) {
+        return {
+          isError: true
+        }
+      }
+
+      return {
+        isEdit: !isEdit,
         isError: false
+      }
+    })
+  }
+
+  onInputEdit = (event) => {
+    this.setState({
+      text: event.target.value
+    });
+  }
+
+  render() {
+    const { isEdit, isError, text } = this.state;
+    const { important, done } = this.props;
+
+    const textStyle = {
+      textDecoration: done ? 'line-through' : 'none',
+      color: done ? '#aaa' : (important ? 'red': 'black'),
+      fontWeight: done ? "normal": (important ? "bold" : "normal"),
     }
 
-
-
-
-
-    onImportant = () => {
-        this.setState({
-            isImportant: !this.state.isImportant
-        });
+    const inputStyle = {
+      borderColor: isError ? 'red' : '#ccc'
     }
-    onDeletebtn = () => {
-        this.props.onDeleteItem(this.props.uniqueId)
-    }
-
-    onEditButton = () => {
-        this.setState(({ isEdit, newText }) => {
-            if (isEdit && !validateInput(newText)) {
-                console.log("error");
-                return {
-                    isError: true
-                }
-            }
-            return {
-                isEdit: !isEdit,
-                isError: false
-            }
-        })
-    }
-
-    onInput = (event) => {
-
-
-        this.setState({
-            newText: event.target.value,
-        });
-    };
-
-
-    render() {
-        const { isImportant, isEdit, isError } = this.state
-
-        const textStyle = {
-            textDecoration: this.props.isDone ? "red" : "black",
-            color: this.props.isDone ? "#aaa" : isImportant ? "red" : "black",
-            fontWeight: this.props.isDone ? "normal" : isImportant ? "bold" : "normal"
-        }
-
-        const inputStyle = {
-            borderColor: isError ? "red" : "#ccc"
-        }
-        return (<li className="list-item" >
-
-            {isEdit ? (
-                <div className="item-input-wrapper">
-                    <input type="text"
-                        value={this.state.newText}
-                        style={inputStyle}
-                        onChange={this.onInput} />
-
-                    {isError ? <span className="input-error-message">Input text is requires</span> : null
-                    }
-                </div>
-            ) : (
-
-                <span className="item-test" style={textStyle} onClick={this.props.onDone}>
-                    {this.state.newText}
-                </span>
-
-            )}
-            <span className="item-btns">
-                <button className="item-btn-edit" onClick={this.onEditButton}> <FaPenToSquare /> </button>
-                <button className="item-btn-done" onClick={this.props.onDone}><FaCheck /></button>
-                <button className="item-btn-important" onClick={this.onImportant}><FaInfo /></button>
-                <button className="item-btn-remove" onClick={this.onDeletebtn}><FaTrash /> </button>
-
+  
+    return (
+      <li className='list-item'>
+        {
+          isEdit ? (
+            <div className='item-input-wrapper'>
+              <input
+                type='text'
+                className='list-item-edit-input'
+                style={inputStyle}
+                onChange={this.onInputEdit}
+                value={text}
+              />
+              
+              {
+                isError ? <span className='input-error-message'>Input text is required.</span> : null
+              }
+            </div>
+          ) : (
+            <span className='item-text' style={textStyle} onClick={ this.onDone }>
+              {text}
             </span>
-        </li>
-        )
-    }
+          )
+        }
+  
+        <span className='item-btns'>
+          <button onClick={this.onEdit}>
+            { isEdit ? <FaCircleCheck /> : <FaPenToSquare /> }
+          </button>
+          <button className='item-btn-done' onClick={ this.onDone }><FaCheck /></button>
+          <button className='item-btn-important' onClick={ this.onImportant }><FaInfo /></button>
+          <button className='item-btn-remove' onClick={this.onDelete}><FaTrash /></button>
+        </span>
+      </li>
+    );
+  }
 }
-
-export default TodoListItem
+  
+export default TodoListItem;

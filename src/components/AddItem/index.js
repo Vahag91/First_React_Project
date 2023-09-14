@@ -1,4 +1,3 @@
 import AddItem from "./AddItem";
 
-
-export default AddItem
+export default AddItem;

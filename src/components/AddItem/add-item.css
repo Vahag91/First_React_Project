@@ -1,5 +1,5 @@
 .additem {
-    padding: 10px 5px;
+    padding: 10px 10px;
 }
 
 .additem input {
@@ -8,20 +8,20 @@
     border: 1px solid #e5e5e5;
     border-radius: 5px 0 0 5px;
     width: 70%;
-
 }
 
 .additem button {
-padding: 10px;
-outline: none;
-border-radius: 0 5px 5px 0;
-width: 20%;
-cursor: pointer;
-background-color: rgb(134, 134, 218);
-transition: all 0.3 ease;
+    padding: 11px;
+    border: none;
+    outline: none;
+    border-radius: 0 5px 5px 0;
+    width: 20%;
+    background-color: #25458b;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
-.additem button:hover{
-    background-color: rgb(216, 216, 230);
+.additem button:hover {
+    background-color: #1a2e5b;
 }
-

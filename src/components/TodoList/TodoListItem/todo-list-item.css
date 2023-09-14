@@ -15,6 +15,15 @@
     background-color: #f8f8f8;
 }
 
+.item-text {
+    display: block;
+    float: left;
+}
+
+.item-text:hover {
+    cursor: pointer;
+}
+
 .item-btns {
     float: right;
 }
@@ -24,7 +33,7 @@
     border: 1px solid #e5e5e5;
     background-color: #fff;
     color: #000;
-    padding: 5px 10px;
+    padding: 3px 10px;
     cursor: pointer;
     font-size: 12px;
     border-radius: 2px;
@@ -32,8 +41,8 @@
     transition: all 0.3s ease;
 }
 
-.item-btns button:hover{
-    background-color: aquamarine;
+.item-btns button:hover {
+    background-color: #edffdc;
 }
 
 .item-input-wrapper {
@@ -41,6 +50,7 @@
     position: relative;
     top: -6px
 }
+
 .item-input-wrapper .input-error-message {
     display: block;
     font-size: 8px;
@@ -48,11 +58,11 @@
     margin-left: 1px;
 }
 
-.item-text {
-    display: block;
-    float: left;
-}
-
-.item-text:hover {
-    cursor: pointer;
+.list-item-edit-input {
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 3px 8px;
+    font-size: 12px;
+    color: #303030;
 }

@@ -1,90 +1,61 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom/client"
+import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Search from "./components/Search";
 import TodoList from "./components/TodoList";
 import AddItem from "./components/AddItem";
-import "./index.css"
-
-
-
+import "./index.css";
 
 class App extends Component {
 
   state = {
     items: [
-      { text: "Learn JS", important: true, id: 1 },
-      { text: "Drink Coffee", important: true, id: 2 },
-      { text: "Learn React", important: false, id: 3 },
-      { text: "Learn TypeScript", important: false, id: 4 },
-      { text: "Learn NodeJs", important: true, id: 5 }
+      { text: "Learn JS", important: true, done: false, id: 1 },
+      { text: "Drink Coffee", important: false, done: false, id: 2 },
+      { text: "Learn React", important: false, done: false, id: 3 },
+      { text: "Learn TypeScript", important: true, done: false, id: 4 },
+      { text: "Learn Node.js", important: false, done: false, id: 5 },
     ],
-    isDone: false,
-    storedItems: []
+    term: '',
+    filter: 'all', // all, done, important
   }
 
-  componentDidMount = () => {
-    this.setState(() => {
-      const copy = [...this.state.items];
-      return { storedItems: copy };
-    })
+  onSearch = (term) => {
+    this.setState({ term })
   }
 
-  showingAll =()=>{
-    const copy = [...this.state.storedItems]
-    this.setState(()=>{
-      return{
-        items: copy
-      }
-    })
-  }
-
-  showingImportant = ()=>{
-    const importantItems = [...this.state.items.filter((e)=>{
-      return e.important === true
-    })] 
-    console.log(importantItems);
-    this.setState(()=>{
-      return{
-        items: importantItems
-      }
-    })
-  }
-
-  handleSearch = (text) => {
-
-    console.log(this.state.storedItems);
-
-    const searchingKeys = text.target.value.toLowerCase()
-
-    if (searchingKeys === "") {
-      this.setState({
-        items: [...this.state.storedItems]
-      })
-    } else {
-
-      const filtered = this.state.items.filter((e) => {
-        return e.text.toLowerCase().includes(searchingKeys)
-      })
-      this.setState({
-        items: filtered
-      })
+  handleSearch = (items, term) => {
+    if (term.trim().length === 0) {
+      return items;
     }
+
+    return items.filter((item) => {
+      return item.text.toLowerCase().indexOf(term.toLowerCase()) > -1
+    })
   }
 
-
-  onDone = () => {
-    this.setState({
-      isDone: !this.state.isDone
+  deletItem = (id) => {
+    this.setState(({ items }) => {
+      const idx = items.findIndex((el) => el.id === id)
+  
+      return {
+        items: [
+          ...items.slice(0, idx),
+          ...items.slice(idx + 1)
+        ]
+      }
     })
   }
 
   onAddItem = (text) => {
+    const id = this.state.items.length ? this.state.items[this.state.items.length - 1].id + 1 : 1
+
     const newItem = {
       text,
       important: false,
-      id: this.state.items.length ? this.state.items[this.state.items.length - 1].id + 1 : 1
+      id
     };
+
     this.setState((prevState) => {
       return {
         items: [...prevState.items, newItem]
@@ -92,33 +63,86 @@ class App extends Component {
     })
   }
 
-  onDeleteItem = (id) => {
+  onImportant = (id) => {
     this.setState(({ items }) => {
-
       const idx = items.findIndex((el) => el.id === id)
 
-      return {
-        items:
-          [...items.slice(0, idx),
-          ...items.slice(idx + 1)]
+      const newItem = {
+        ...items[idx],
+        important: !items[idx].important
       }
+
+      return {
+        items: [
+          ...items.slice(0, idx),
+          newItem,
+          ...items.slice(idx + 1)
+        ]
+      }
+      
     })
   }
 
+  onDone = (id) => {
+    this.setState(({ items }) => {
+      const idx = items.findIndex((el) => el.id === id)
 
-  render() {
+      const newItem = {
+        ...items[idx],
+        done: !items[idx].done
+      }
+
+      return {
+        items: [
+          ...items.slice(0, idx),
+          newItem,
+          ...items.slice(idx + 1)
+        ]
+      }
+      
+    })
+  }
+
+  onFilter = (items, filterBtn) => {
+    switch(filterBtn) {
+      case 'all':
+        return items;
+      case 'done':
+        return items.filter((el) => el.done)
+      case 'important':
+        return items.filter((el) => el.important && !el.done)
+      default:
+        return items
+    }
+  }
+
+  onFilterChange = (filter) => {
+    this.setState({ filter })
+  }
+
+  render () {
+    const { items, term, filter } = this.state;
+    const visibleItems = this.onFilter(this.handleSearch(items, term), filter)
+
+    const doneCount = items.filter((el) => el.done).length
+    const importantCount = items.filter((el) => el.important && !el.done).length
 
     return (
-      <div className="app" copy={this.makingCopy}>
-
-        <Header done={8} important={23} />
-        <Search handleSearch={this.handleSearch} showingImportant={this.showingImportant} showingAll={this.showingAll}/>
-        <TodoList items={this.state.items} isDone={this.state.isDone} onDeleteItem={this.onDeleteItem} onDone={this.onDone} />
+      <div className="app">
+        <Header done={doneCount} important={importantCount} />
+        <Search onSearch={this.onSearch} onFilterChange={this.onFilterChange} />
+        <TodoList
+          items={visibleItems}
+          deletItem={this.deletItem}
+          onImportant={this.onImportant}
+          onDone={this.onDone}
+        />
         <AddItem onAddItem={this.onAddItem} />
       </div>
-    )
+    );
   }
-}
-const root = ReactDOM.createRoot(document.getElementById("root"))
+};
 
-root.render(<App />)
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(<App />);
