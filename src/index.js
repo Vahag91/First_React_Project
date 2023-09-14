@@ -63,13 +63,13 @@ class App extends Component {
     })
   }
 
-  onImportant = (id) => {
+  onGroupChange = (id,value) => {
     this.setState(({ items }) => {
       const idx = items.findIndex((el) => el.id === id)
 
       const newItem = {
         ...items[idx],
-        important: !items[idx].important
+        [value]: !items[idx][value]
       }
 
       return {
@@ -83,25 +83,25 @@ class App extends Component {
     })
   }
 
-  onDone = (id) => {
-    this.setState(({ items }) => {
-      const idx = items.findIndex((el) => el.id === id)
+  // onDone = (id) => {
+  //   this.setState(({ items }) => {
+  //     const idx = items.findIndex((el) => el.id === id)
 
-      const newItem = {
-        ...items[idx],
-        done: !items[idx].done
-      }
+  //     const newItem = {
+  //       ...items[idx],
+  //       done: !items[idx].done
+  //     }
 
-      return {
-        items: [
-          ...items.slice(0, idx),
-          newItem,
-          ...items.slice(idx + 1)
-        ]
-      }
+  //     return {
+  //       items: [
+  //         ...items.slice(0, idx),
+  //         newItem,
+  //         ...items.slice(idx + 1)
+  //       ]
+  //     }
       
-    })
-  }
+  //   })
+  // }
 
   onFilter = (items, filterBtn) => {
     switch(filterBtn) {
@@ -134,8 +134,8 @@ class App extends Component {
         <TodoList
           items={visibleItems}
           deletItem={this.deletItem}
-          onImportant={this.onImportant}
-          onDone={this.onDone}
+          onGroupChange={this.onGroupChange}
+          
         />
         <AddItem onAddItem={this.onAddItem} />
       </div>

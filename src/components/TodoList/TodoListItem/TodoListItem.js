@@ -12,11 +12,11 @@ class TodoListItem extends Component {
   }
 
   onDone = () => {
-    this.props.onDone(this.props.id)
+    this.props.onGroupChange(this.props.id,"done")
   }
 
   onImportant = () => {
-    this.props.onImportant(this.props.id)
+    this.props.onGroupChange(this.props.id,"important")
   }
 
   onDelete = () => {
